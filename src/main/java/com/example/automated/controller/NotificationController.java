@@ -1,23 +1,28 @@
 package com.example.automated.controller;
 
-import com.example.automated.model.Comment;
+import com.example.automated.model.User;
+import com.example.automated.repository.UserRepository;
+import com.example.automated.service.UserService;
 import com.example.automated.model.Notification;
 import com.example.automated.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import com.example.automated.repository.UserRepository;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/notifications")
 public class NotificationController {
+    private final UserRepository userRepository;
 
     private final NotificationService notificationService;
 
     @Autowired
-    public NotificationController(NotificationService notificationService) {
+    public NotificationController(NotificationService notificationService,  UserRepository userRepository) {
         this.notificationService = notificationService;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/unread/{userId}")
@@ -30,9 +35,15 @@ public class NotificationController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Notification> addNotification(@RequestBody Notification notification) {
-        return ResponseEntity.ok(notificationService.addNotification(notification));
+    public ResponseEntity<Notification> sendNotification(@RequestBody Notification notification) {
+        String username = notification.getUser().getUsername();
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        notification.setUser(user);
+        return ResponseEntity.ok(notificationService.sendNotification(notification));
     }
+
 
     @PutMapping("/mark-as-read/{id}")
     public ResponseEntity<Void> markAsRead(@PathVariable Long id) {

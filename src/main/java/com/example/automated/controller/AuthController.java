@@ -21,7 +21,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Login login){
-        User user = userService.authenticate(login.getUsername(), login.getUsername());
+        User user = userService.authenticate(login.getUsername(), login.getPassword());
 
         if(user != null){
             return ResponseEntity.ok(user);
