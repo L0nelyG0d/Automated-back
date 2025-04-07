@@ -2,7 +2,6 @@ package com.example.automated.service;
 
 import com.example.automated.model.User;
 import com.example.automated.repository.UserRepository;
-import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +15,14 @@ public class UserService {
     @Autowired
     public UserService(UserRepository userRepository){
         this.userRepository = userRepository;
+    }
+
+    public User authenticate(String username, String password) {
+        Optional<User> user = userRepository.findByUsername(username);
+        if (user.isPresent() && user.get().getPassword().equals(password)) {
+            return user.orElse(null);
+        }
+        return null;
     }
 
     public Optional<User> getUserById(Long id) {

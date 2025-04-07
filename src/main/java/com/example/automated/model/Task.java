@@ -1,5 +1,6 @@
 package com.example.automated.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,6 +23,7 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "list_id", nullable = false)
+    @JsonBackReference
     private TaskList list;
 
     @ManyToOne

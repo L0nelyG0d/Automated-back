@@ -1,5 +1,6 @@
 package com.example.automated.controller;
 
+import com.example.automated.model.Comment;
 import com.example.automated.model.Notification;
 import com.example.automated.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,11 @@ public class NotificationController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(notifications);
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<Notification> addNotification(@RequestBody Notification notification) {
+        return ResponseEntity.ok(notificationService.addNotification(notification));
     }
 
     @PutMapping("/mark-as-read/{id}")

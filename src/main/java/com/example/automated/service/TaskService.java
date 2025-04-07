@@ -18,7 +18,9 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-
+    public List<Task> getTasksByUsername(String username){
+        return taskRepository.findByAssignedToUsername(username);
+    }
 
     public List<Task> getTasksByUser(Long userId) {
         return taskRepository.findByAssignedToId(userId);

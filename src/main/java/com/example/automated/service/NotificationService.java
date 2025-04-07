@@ -29,4 +29,8 @@ public class NotificationService {
 
         notificationRepository.save(notification);
     }
+    public Notification addNotification(Notification notification){
+        return notificationRepository.save(notification);
+
+    }
 }
