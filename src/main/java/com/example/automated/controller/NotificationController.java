@@ -35,7 +35,11 @@ public class NotificationController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Notification> sendNotification(@RequestBody Notification notification) {
+    public ResponseEntity<?> sendNotification(@RequestBody Notification notification) {
+        if (notification.getUser() == null || notification.getUser().getUsername() == null) {
+            return ResponseEntity.badRequest().body("User is missing in request");
+        }
+
         String username = notification.getUser().getUsername();
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));

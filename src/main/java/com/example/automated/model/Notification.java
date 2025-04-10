@@ -1,5 +1,6 @@
 package com.example.automated.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,5 +23,6 @@ public class Notification {
     @Column(nullable = false)
     private String message;
 
+    @JsonProperty("read")
     private boolean isRead;
 }
